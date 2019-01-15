@@ -16,10 +16,24 @@
  */
 plugins {
     id "com.github.hauner.jarTest" version "1.0"
+    id "maven"
 }
 
 dependencies {
     compile "io.netty:netty-handler:${netty_version}"
     compile "io.netty:netty-transport-native-epoll:${netty_version}", optional
     compile "org.slf4j:slf4j-api:${slf4j_version}"
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${maven_url}") {
+                authentication(userName: "${maven_user}", password: "${maven_password}")
+                pom.version = project.version
+                pom.artifactId = project.name
+                pom.groupId = project.group
+            }
+        }
+    }
 }

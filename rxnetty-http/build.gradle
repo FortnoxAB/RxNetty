@@ -14,10 +14,26 @@
  * limitations under the License.
  *
  */
+
+apply plugin: 'maven'
+
 dependencies {
     compile project(':rxnetty-common')
     compile project(':rxnetty-tcp')
     compile "io.netty:netty-codec-http:${netty_version}"
 
     testCompile project(path: ':rxnetty-common', configuration: 'testArchives')
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${maven_url}") {
+                authentication(userName: "${maven_user}", password: "${maven_password}")
+                pom.version = project.version
+                pom.artifactId = project.name
+                pom.groupId = project.group
+            }
+        }
+    }
 }
